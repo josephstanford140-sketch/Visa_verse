@@ -120,7 +120,7 @@ const DoctorDetailPage = () => {
                   </div>
                   {p.catalogSlide > 0 && (
                     <button
-                      onClick={() => navigate(`/catalog?slide=${p.catalogSlide}`)}
+                      onClick={() => navigate(`/catalog?slide=${p.catalogSlide}&from=/doctors/${doctor.id}`)}
                       className="p-2 rounded-lg hover:bg-primary/10"
                       data-testid={`button-view-catalog-${p.id}`}
                     >
