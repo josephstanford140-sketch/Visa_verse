@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface Doctor {
   id: string;
   name: string;
@@ -44,13 +51,15 @@ export interface Order {
 interface AppState {
   isLoggedIn: boolean;
   userName: string;
+  users: User[];
   doctors: Doctor[];
   products: Product[];
   categories: string[];
   reminders: Reminder[];
   visits: Visit[];
   orders: Order[];
-  login: (name: string) => void;
+  register: (name: string, email: string, password: string) => { success: boolean; error?: string };
+  login: (email: string, password: string) => { success: boolean; error?: string };
   logout: () => void;
   addDoctor: (d: Omit<Doctor, 'id'>) => void;
   updateDoctor: (d: Doctor) => void;
@@ -72,16 +81,39 @@ const uid = () => crypto.randomUUID();
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       isLoggedIn: false,
       userName: '',
+      users: [],
       doctors: [],
       products: [],
       categories: ['Tablet', 'Syrup', 'Injection', 'Cream', 'Capsule'],
       reminders: [],
       visits: [],
       orders: [],
-      login: (name: string) => set({ isLoggedIn: true, userName: name }),
+      register: (name: string, email: string, password: string) => {
+        const existing = get().users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+        if (existing) {
+          return { success: false, error: 'An account with this email already exists' };
+        }
+        const newUser: User = { id: uid(), name, email: email.toLowerCase(), password };
+        set((s) => ({
+          users: [...s.users, newUser],
+          isLoggedIn: true,
+          userName: name,
+        }));
+        return { success: true };
+      },
+      login: (email: string, password: string) => {
+        const user = get().users.find(
+          (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+        );
+        if (!user) {
+          return { success: false, error: 'Invalid email or password' };
+        }
+        set({ isLoggedIn: true, userName: user.name });
+        return { success: true };
+      },
       logout: () => set({ isLoggedIn: false, userName: '' }),
       addDoctor: (d) => set((s) => ({ doctors: [...s.doctors, { ...d, id: uid() }] })),
       updateDoctor: (d) => set((s) => ({ doctors: s.doctors.map((doc) => (doc.id === d.id ? d : doc)) })),
