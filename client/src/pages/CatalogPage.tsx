@@ -19,6 +19,7 @@ const CatalogPage = () => {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [exiting, setExiting] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
   const startY = useRef(0);
@@ -96,15 +97,20 @@ const CatalogPage = () => {
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col select-none" data-testid="catalog-fullscreen">
       <div className="flex items-center justify-between px-3 h-14 bg-gradient-to-b from-black/90 to-black/60 backdrop-blur-sm z-10">
-        <div
-          onPointerDown={(e) => { e.stopPropagation(); e.preventDefault(); navigate(returnTo); }}
-          className="relative z-20 flex items-center gap-1.5 h-10 px-3 rounded-full bg-white/15 text-white font-medium text-sm hover:bg-white/25 active:scale-95 transition-all cursor-pointer"
+        <button
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (exiting) return;
+            setExiting(true);
+            setTimeout(() => navigate(returnTo), 50);
+          }}
+          className="relative z-20 flex items-center gap-1.5 h-10 px-3 rounded-full bg-white/15 text-white font-medium text-sm hover:bg-white/25 active:scale-95 transition-all"
           data-testid="button-close-catalog"
-          role="button"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Back</span>
-        </div>
+        </button>
         <span className="text-white text-sm font-semibold bg-white/15 px-3 py-1 rounded-full" data-testid="text-slide-counter">
           {current + 1} / {TOTAL_SLIDES}
         </span>
