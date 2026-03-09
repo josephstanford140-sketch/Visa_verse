@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Phone, MapPin, GraduationCap, Calendar, Building2, Stethoscope, StickyNote, Plus, X, Pill } from 'lucide-react';
+import { Phone, MapPin, GraduationCap, Calendar, Building2, Stethoscope, StickyNote, Plus, X, Pill, BookOpen } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import { useAppStore } from '@/store/useAppStore';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -118,6 +118,15 @@ const DoctorDetailPage = () => {
                     <p className="font-medium text-card-foreground truncate">{p.name}</p>
                     <p className="text-xs text-muted-foreground truncate">{p.composition || p.category}</p>
                   </div>
+                  {p.catalogSlide > 0 && (
+                    <button
+                      onClick={() => navigate(`/catalog?slide=${p.catalogSlide}`)}
+                      className="p-2 rounded-lg hover:bg-primary/10"
+                      data-testid={`button-view-catalog-${p.id}`}
+                    >
+                      <BookOpen className="w-4 h-4 text-primary" />
+                    </button>
+                  )}
                   <button
                     onClick={() => togglePrescribedProduct(doctor.id, p.id)}
                     className="p-2 rounded-lg hover:bg-destructive/10"
