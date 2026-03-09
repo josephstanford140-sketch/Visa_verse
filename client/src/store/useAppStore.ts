@@ -42,12 +42,16 @@ export interface Order {
 }
 
 interface AppState {
+  isLoggedIn: boolean;
+  userName: string;
   doctors: Doctor[];
   products: Product[];
   categories: string[];
   reminders: Reminder[];
   visits: Visit[];
   orders: Order[];
+  login: (name: string) => void;
+  logout: () => void;
   addDoctor: (d: Omit<Doctor, 'id'>) => void;
   updateDoctor: (d: Doctor) => void;
   deleteDoctor: (id: string) => void;
@@ -69,12 +73,16 @@ const uid = () => crypto.randomUUID();
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
+      isLoggedIn: false,
+      userName: '',
       doctors: [],
       products: [],
       categories: ['Tablet', 'Syrup', 'Injection', 'Cream', 'Capsule'],
       reminders: [],
       visits: [],
       orders: [],
+      login: (name: string) => set({ isLoggedIn: true, userName: name }),
+      logout: () => set({ isLoggedIn: false, userName: '' }),
       addDoctor: (d) => set((s) => ({ doctors: [...s.doctors, { ...d, id: uid() }] })),
       updateDoctor: (d) => set((s) => ({ doctors: s.doctors.map((doc) => (doc.id === d.id ? d : doc)) })),
       deleteDoctor: (id) => set((s) => ({ doctors: s.doctors.filter((d) => d.id !== id) })),

@@ -2,7 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAppStore } from "./store/useAppStore";
+import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import DoctorsPage from "./pages/DoctorsPage";
 import ProductsPage from "./pages/ProductsPage";
@@ -13,6 +15,12 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isLoggedIn = useAppStore((s) => s.isLoggedIn);
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -20,12 +28,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/doctors" element={<DoctorsPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/reminders" element={<RemindersPage />} />
-          <Route path="/visits" element={<VisitsPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/doctors" element={<ProtectedRoute><DoctorsPage /></ProtectedRoute>} />
+          <Route path="/products" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
+          <Route path="/reminders" element={<ProtectedRoute><RemindersPage /></ProtectedRoute>} />
+          <Route path="/visits" element={<ProtectedRoute><VisitsPage /></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
