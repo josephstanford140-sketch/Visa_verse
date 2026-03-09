@@ -97,7 +97,7 @@ const CatalogPage = () => {
       <div className="flex items-center justify-between px-3 h-14 bg-gradient-to-b from-black/90 to-black/60 backdrop-blur-sm z-10">
         <button
           onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => { e.stopPropagation(); navigate('/products'); }}
+          onClick={(e) => { e.stopPropagation(); navigate(-1); }}
           className="relative z-20 flex items-center gap-1.5 h-10 px-3 rounded-full bg-white/15 text-white font-medium text-sm hover:bg-white/25 active:scale-95 transition-all"
           data-testid="button-close-catalog"
         >
