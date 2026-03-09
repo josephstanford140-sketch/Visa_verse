@@ -19,7 +19,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background safe-bottom">
+    <div className="min-h-screen bg-background pb-20">
       <div className="px-4 pt-6 pb-3 flex items-start justify-between">
         <div>
           <p className="text-sm text-muted-foreground" data-testid="text-welcome">Welcome back, {userName}</p>

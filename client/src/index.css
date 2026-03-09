@@ -101,3 +101,18 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+input, select, textarea {
+  font-size: 16px !important;
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+  }
+}

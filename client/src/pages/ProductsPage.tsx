@@ -34,7 +34,7 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background safe-bottom">
+    <div className="min-h-screen bg-background pb-20">
       <PageHeader
         title="Products"
         action={

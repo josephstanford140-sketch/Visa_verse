@@ -35,7 +35,7 @@ const DoctorsPage = () => {
   const set = (key: string, val: string) => setForm((f) => ({ ...f, [key]: val }));
 
   return (
-    <div className="min-h-screen bg-background safe-bottom">
+    <div className="min-h-screen bg-background pb-20">
       <PageHeader title="Doctors" action={<Button size="sm" onClick={openNew}><Plus className="w-4 h-4 mr-1" />Add</Button>} />
 
       <div className="px-4 py-3">

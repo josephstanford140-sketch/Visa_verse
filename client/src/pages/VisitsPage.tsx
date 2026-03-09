@@ -46,7 +46,7 @@ const VisitsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background safe-bottom">
+    <div className="min-h-screen bg-background pb-20">
       <PageHeader title="Visits" action={<Button size="sm" onClick={() => setOpen(true)}><Plus className="w-4 h-4 mr-1" />Add</Button>} />
 
       <div className="px-4 py-3">

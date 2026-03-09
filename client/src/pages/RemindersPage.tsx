@@ -24,7 +24,7 @@ const RemindersPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background safe-bottom">
+    <div className="min-h-screen bg-background pb-20">
       <PageHeader title="Reminders" action={<Button size="sm" onClick={() => setOpen(true)}><Plus className="w-4 h-4 mr-1" />Add</Button>} />
 
       {/* Slide view for active reminders */}
