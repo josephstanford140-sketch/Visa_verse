@@ -4,7 +4,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Pill } from 'lucide-react';
+import logoImg from '@assets/IMG_20260309_183929_1773061794229.jpg';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -25,14 +25,14 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-8">
-        <div className="flex flex-col items-center text-center space-y-3">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
-            <Pill className="w-8 h-8 text-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground" data-testid="text-company-name">Realmed Pharma</h1>
-            <p className="text-sm text-muted-foreground mt-1">Field Sales Hub</p>
-          </div>
+        <div className="flex flex-col items-center text-center space-y-4">
+          <img
+            src={logoImg}
+            alt="RealMed Pharma"
+            className="w-48 h-auto rounded-xl"
+            data-testid="img-logo"
+          />
+          <p className="text-sm text-muted-foreground">Field Sales Hub</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
