@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const TOTAL_SLIDES = 90;
@@ -91,18 +91,19 @@ const CatalogPage = () => {
 
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col select-none" data-testid="catalog-fullscreen">
-      <div className="flex items-center justify-between px-4 h-12 bg-black/80 backdrop-blur-sm z-10">
+      <div className="flex items-center justify-between px-3 h-14 bg-gradient-to-b from-black/90 to-black/60 backdrop-blur-sm z-10">
         <button
           onClick={() => navigate(-1)}
-          className="w-9 h-9 rounded-full flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+          className="flex items-center gap-1.5 h-10 px-3 rounded-full bg-white/15 text-white font-medium text-sm hover:bg-white/25 active:scale-95 transition-all"
           data-testid="button-close-catalog"
         >
-          <X className="w-5 h-5" />
+          <ArrowLeft className="w-5 h-5" />
+          <span>Back</span>
         </button>
-        <span className="text-white/90 text-sm font-medium" data-testid="text-slide-counter">
+        <span className="text-white text-sm font-semibold bg-white/15 px-3 py-1 rounded-full" data-testid="text-slide-counter">
           {current + 1} / {TOTAL_SLIDES}
         </span>
-        <div className="w-9" />
+        <div className="w-[72px]" />
       </div>
 
       <div
