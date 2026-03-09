@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Plus, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Trash2, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import PageHeader from '@/components/PageHeader';
 import { useAppStore } from '@/store/useAppStore';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -9,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 
 const ProductsPage = () => {
+  const navigate = useNavigate();
   const { products, categories, addProduct, deleteProduct, addCategory } = useAppStore();
   const [open, setOpen] = useState(false);
   const [catOpen, setCatOpen] = useState(false);
@@ -44,6 +46,23 @@ const ProductsPage = () => {
           </div>
         }
       />
+
+      <div className="px-4 pb-2">
+        <button
+          onClick={() => navigate('/catalog')}
+          data-testid="button-view-catalog"
+          className="w-full flex items-center gap-3 rounded-xl bg-primary/10 border border-primary/20 p-4 transition-colors active:scale-[0.98]"
+        >
+          <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+            <BookOpen className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <div className="text-left">
+            <p className="font-semibold text-foreground">Product Catalog</p>
+            <p className="text-xs text-muted-foreground">View full product catalog (90 pages)</p>
+          </div>
+          <ChevronRight className="w-5 h-5 text-muted-foreground ml-auto" />
+        </button>
+      </div>
 
       {/* Category filter */}
       <div className="px-4 py-3 flex gap-2 overflow-x-auto">
