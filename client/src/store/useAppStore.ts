@@ -5,6 +5,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  phone: string;
   password: string;
 }
 
@@ -154,6 +155,8 @@ const SEEDED_PRODUCTS: Product[] = DEFAULT_PRODUCTS.map((p, i) => ({ ...p, id: `
 interface AppState {
   isLoggedIn: boolean;
   userName: string;
+  userEmail: string;
+  userPhone: string;
   users: User[];
   doctors: Doctor[];
   products: Product[];
@@ -162,9 +165,10 @@ interface AppState {
   visits: Visit[];
   orders: Order[];
   _seeded: boolean;
-  register: (name: string, email: string, password: string) => { success: boolean; error?: string };
+  register: (name: string, email: string, phone: string, password: string) => { success: boolean; error?: string };
   login: (email: string, password: string) => { success: boolean; error?: string };
   logout: () => void;
+  updateProfile: (name: string, phone: string) => void;
   addDoctor: (d: Omit<Doctor, 'id'>) => void;
   updateDoctor: (d: Doctor) => void;
   deleteDoctor: (id: string) => void;
@@ -189,6 +193,8 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       isLoggedIn: false,
       userName: '',
+      userEmail: '',
+      userPhone: '',
       users: [],
       doctors: [],
       products: [],
@@ -197,16 +203,18 @@ export const useAppStore = create<AppState>()(
       visits: [],
       orders: [],
       _seeded: false,
-      register: (name: string, email: string, password: string) => {
+      register: (name: string, email: string, phone: string, password: string) => {
         const existing = get().users.find((u) => u.email.toLowerCase() === email.toLowerCase());
         if (existing) {
           return { success: false, error: 'An account with this email already exists' };
         }
-        const newUser: User = { id: uid(), name, email: email.toLowerCase(), password };
+        const newUser: User = { id: uid(), name, email: email.toLowerCase(), phone, password };
         set((s) => ({
           users: [...s.users, newUser],
           isLoggedIn: true,
           userName: name,
+          userEmail: email.toLowerCase(),
+          userPhone: phone,
         }));
         return { success: true };
       },
@@ -217,10 +225,18 @@ export const useAppStore = create<AppState>()(
         if (!user) {
           return { success: false, error: 'Invalid email or password' };
         }
-        set({ isLoggedIn: true, userName: user.name });
+        set({ isLoggedIn: true, userName: user.name, userEmail: user.email, userPhone: user.phone || '' });
         return { success: true };
       },
-      logout: () => set({ isLoggedIn: false, userName: '' }),
+      logout: () => set({ isLoggedIn: false, userName: '', userEmail: '', userPhone: '' }),
+      updateProfile: (name: string, phone: string) => {
+        const email = get().userEmail;
+        set((s) => ({
+          userName: name,
+          userPhone: phone,
+          users: s.users.map((u) => u.email === email ? { ...u, name, phone } : u),
+        }));
+      },
       addDoctor: (d) => set((s) => ({ doctors: [...s.doctors, { ...d, id: uid() }] })),
       updateDoctor: (d) => set((s) => ({ doctors: s.doctors.map((doc) => (doc.id === d.id ? d : doc)) })),
       deleteDoctor: (id) => set((s) => ({ doctors: s.doctors.filter((d) => d.id !== id) })),

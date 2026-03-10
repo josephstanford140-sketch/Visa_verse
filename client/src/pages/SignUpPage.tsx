@@ -12,6 +12,7 @@ const SignUpPage = () => {
   const register = useAppStore((s) => s.register);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +40,7 @@ const SignUpPage = () => {
       setError('Passwords do not match');
       return;
     }
-    const result = register(name.trim(), email.trim(), password);
+    const result = register(name.trim(), email.trim(), phone.trim(), password);
     if (!result.success) {
       setError(result.error || 'Registration failed');
       return;
@@ -84,6 +85,17 @@ const SignUpPage = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setError(''); }}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Mobile Number</Label>
+            <Input
+              id="phone"
+              type="tel"
+              data-testid="input-phone"
+              placeholder="Enter your mobile number"
+              value={phone}
+              onChange={(e) => { setPhone(e.target.value); setError(''); }}
             />
           </div>
           <div className="space-y-2">

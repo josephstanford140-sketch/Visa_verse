@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Stethoscope, Package, ShoppingCart, MapPin, Bell, LogOut, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Stethoscope, Package, ShoppingCart, MapPin, Bell, BookOpen, ChevronLeft, ChevronRight, UserCircle } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { doctors, products, orders, visits, reminders, userName, logout } = useAppStore();
+  const { doctors, products, orders, visits, reminders, userName } = useAppStore();
 
   const today = new Date().toISOString().split('T')[0];
   const todayVisits = visits.filter((v) => v.date === today);
@@ -27,11 +27,11 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold text-foreground">Realmed Pharma</h1>
         </div>
         <button
-          onClick={() => { logout(); navigate('/login'); }}
-          data-testid="button-logout"
+          onClick={() => navigate('/profile')}
+          data-testid="button-profile"
           className="p-2 rounded-lg hover:bg-secondary transition-colors mt-1"
         >
-          <LogOut className="w-5 h-5 text-muted-foreground" />
+          <UserCircle className="w-6 h-6 text-primary" />
         </button>
       </div>
 
