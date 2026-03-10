@@ -53,6 +53,7 @@ export function log(message: string, source = "express") {
     await runMigrations();
 
     const app = express();
+    app.set("trust proxy", 1);
     const httpServer = createServer(app);
 
     app.use(

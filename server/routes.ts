@@ -61,6 +61,7 @@ export async function registerRoutes(
         return res.status(401).json({ message: "Invalid email or password" });
       }
       req.session.userId = user.id;
+      await storage.seedProducts(user.id, DEFAULT_PRODUCTS);
       res.json({ id: user.id, username: user.username, email: user.email, phone: user.phone });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
