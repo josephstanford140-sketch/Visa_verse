@@ -87,7 +87,7 @@ const DEFAULT_PRODUCTS: Omit<Product, 'id'>[] = [
   { name: 'Lytonol LS', category: 'Eye Drops', composition: 'Phenylephrine 2.5% + Tropicamide 0.5%', description: 'Low-strength mydriatic for pediatric use', catalogSlide: 29 },
   { name: 'Myloact', category: 'Eye Drops', composition: 'Cyclosporine 0.05%', description: 'Immunomodulator for chronic dry eye disease', catalogSlide: 30 },
   { name: 'Myloact Gold', category: 'Eye Drops', composition: 'Cyclosporine 0.09%', description: 'Higher-strength immunomodulator for severe dry eye', catalogSlide: 31 },
-  { name: 'Myloact Max', category: 'Eye Drops', composition: 'Cyclosporine 0.1%', description: 'Maximum strength immunomodulator for dry eye', catalogSlide: 32 },
+  { name: 'Myloact Max', category: 'Capsules', composition: 'Cyclosporine 0.1%', description: 'Maximum strength immunomodulator for dry eye', catalogSlide: 32 },
   { name: 'Myloact-M', category: 'Eye Drops', composition: 'Cyclosporine 0.05% + HPMC', description: 'Immunomodulator with enhanced lubrication', catalogSlide: 33 },
   { name: 'Mynapro-D 500', category: 'Capsules', composition: 'Methylcobalamin 1500mcg + Vitamin D3 1000IU + Folic Acid + ALA', description: 'Neuro-ophthalmic nutritional supplement', catalogSlide: 34 },
   { name: 'Myneph+', category: 'Capsules', composition: 'Methylcobalamin + Pregabalin 75mg', description: 'Neuropathic pain management', catalogSlide: 35 },
