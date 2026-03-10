@@ -38,6 +38,17 @@ export function log(message: string, source = "express") {
       throw new Error("SESSION_SECRET environment variable is not set");
     }
 
+    console.log("Testing database connection...");
+    try {
+      const testResult = await pool.query("SELECT 1 as test");
+      console.log("Database connection successful:", testResult.rows[0]);
+    } catch (dbErr: any) {
+      console.error("=== DATABASE CONNECTION FAILED ===");
+      console.error("Error:", dbErr.message);
+      console.error("Make sure DATABASE_URL is correct and the database is accessible.");
+      process.exit(1);
+    }
+
     console.log("Running database migrations...");
     await runMigrations();
 
