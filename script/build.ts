@@ -1,6 +1,6 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile } from "fs/promises";
+import { rm, readFile, writeFile, mkdir } from "fs/promises";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -60,6 +60,17 @@ async function buildAll() {
     external: externals,
     logLevel: "info",
   });
+
+  await writeFile("dist/table.sql", `CREATE TABLE IF NOT EXISTS "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+  "sess" json NOT NULL,
+  "expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
+`);
+  console.log("copied table.sql to dist/");
 }
 
 buildAll().catch((err) => {
