@@ -162,13 +162,18 @@ export const useAppStore = create<AppState>()(
       fetchAll: async () => {
         set({ _loading: true });
         try {
-          const [doctorsList, productsList, ordersList, visitsList, remindersList] = await Promise.all([
+          const results = await Promise.allSettled([
             api.get<Doctor[]>('/api/doctors'),
             api.get<Product[]>('/api/products'),
             api.get<Order[]>('/api/orders'),
             api.get<Visit[]>('/api/visits'),
             api.get<Reminder[]>('/api/reminders'),
           ]);
+          const doctorsList = results[0].status === 'fulfilled' ? results[0].value : [];
+          const productsList = results[1].status === 'fulfilled' ? results[1].value : [];
+          const ordersList = results[2].status === 'fulfilled' ? results[2].value : [];
+          const visitsList = results[3].status === 'fulfilled' ? results[3].value : [];
+          const remindersList = results[4].status === 'fulfilled' ? results[4].value : [];
           const productCategories = [...new Set(productsList.map((p) => p.category || '').filter(Boolean))];
           const allCategories = [...new Set([...DEFAULT_CATEGORIES, ...productCategories])];
           set({ doctors: doctorsList, products: productsList, orders: ordersList, visits: visitsList, reminders: remindersList, categories: allCategories, _loading: false });

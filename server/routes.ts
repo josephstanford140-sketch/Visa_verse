@@ -96,102 +96,140 @@ export async function registerRoutes(
   });
 
   app.get("/api/doctors", requireAuth, async (req, res) => {
-    const data = await storage.getDoctors(req.session.userId!);
-    res.json(data);
+    try {
+      const data = await storage.getDoctors(req.session.userId!);
+      res.json(data);
+    } catch (err: any) { console.error("GET /api/doctors error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.post("/api/doctors", requireAuth, async (req, res) => {
-    const doc = await storage.addDoctor(req.session.userId!, req.body);
-    res.json(doc);
+    try {
+      const doc = await storage.addDoctor(req.session.userId!, req.body);
+      res.json(doc);
+    } catch (err: any) { console.error("POST /api/doctors error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.put("/api/doctors/:id", requireAuth, async (req, res) => {
-    const doc = await storage.updateDoctor(req.session.userId!, req.params.id, req.body);
-    if (!doc) return res.status(404).json({ message: "Doctor not found" });
-    res.json(doc);
+    try {
+      const doc = await storage.updateDoctor(req.session.userId!, req.params.id, req.body);
+      if (!doc) return res.status(404).json({ message: "Doctor not found" });
+      res.json(doc);
+    } catch (err: any) { console.error("PUT /api/doctors error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.delete("/api/doctors/:id", requireAuth, async (req, res) => {
-    await storage.deleteDoctor(req.session.userId!, req.params.id);
-    res.json({ ok: true });
+    try {
+      await storage.deleteDoctor(req.session.userId!, req.params.id);
+      res.json({ ok: true });
+    } catch (err: any) { console.error("DELETE /api/doctors error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.get("/api/products", requireAuth, async (req, res) => {
-    const data = await storage.getProducts(req.session.userId!);
-    res.json(data);
+    try {
+      const data = await storage.getProducts(req.session.userId!);
+      res.json(data);
+    } catch (err: any) { console.error("GET /api/products error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.post("/api/products", requireAuth, async (req, res) => {
-    const prod = await storage.addProduct(req.session.userId!, req.body);
-    res.json(prod);
+    try {
+      const prod = await storage.addProduct(req.session.userId!, req.body);
+      res.json(prod);
+    } catch (err: any) { console.error("POST /api/products error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.put("/api/products/:id", requireAuth, async (req, res) => {
-    const prod = await storage.updateProduct(req.session.userId!, req.params.id, req.body);
-    if (!prod) return res.status(404).json({ message: "Product not found" });
-    res.json(prod);
+    try {
+      const prod = await storage.updateProduct(req.session.userId!, req.params.id, req.body);
+      if (!prod) return res.status(404).json({ message: "Product not found" });
+      res.json(prod);
+    } catch (err: any) { console.error("PUT /api/products error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.delete("/api/products/:id", requireAuth, async (req, res) => {
-    await storage.deleteProduct(req.session.userId!, req.params.id);
-    res.json({ ok: true });
+    try {
+      await storage.deleteProduct(req.session.userId!, req.params.id);
+      res.json({ ok: true });
+    } catch (err: any) { console.error("DELETE /api/products error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.get("/api/orders", requireAuth, async (req, res) => {
-    const data = await storage.getOrders(req.session.userId!);
-    res.json(data);
+    try {
+      const data = await storage.getOrders(req.session.userId!);
+      res.json(data);
+    } catch (err: any) { console.error("GET /api/orders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.post("/api/orders", requireAuth, async (req, res) => {
-    const order = await storage.addOrder(req.session.userId!, req.body);
-    res.json(order);
+    try {
+      const order = await storage.addOrder(req.session.userId!, req.body);
+      res.json(order);
+    } catch (err: any) { console.error("POST /api/orders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.delete("/api/orders/:id", requireAuth, async (req, res) => {
-    await storage.deleteOrder(req.session.userId!, req.params.id);
-    res.json({ ok: true });
+    try {
+      await storage.deleteOrder(req.session.userId!, req.params.id);
+      res.json({ ok: true });
+    } catch (err: any) { console.error("DELETE /api/orders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.get("/api/visits", requireAuth, async (req, res) => {
-    const data = await storage.getVisits(req.session.userId!);
-    res.json(data);
+    try {
+      const data = await storage.getVisits(req.session.userId!);
+      res.json(data);
+    } catch (err: any) { console.error("GET /api/visits error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.post("/api/visits", requireAuth, async (req, res) => {
-    const visit = await storage.addVisit(req.session.userId!, req.body);
-    res.json(visit);
+    try {
+      const visit = await storage.addVisit(req.session.userId!, req.body);
+      res.json(visit);
+    } catch (err: any) { console.error("POST /api/visits error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.patch("/api/visits/:id/toggle", requireAuth, async (req, res) => {
-    const visit = await storage.toggleVisit(req.session.userId!, req.params.id);
-    if (!visit) return res.status(404).json({ message: "Visit not found" });
-    res.json(visit);
+    try {
+      const visit = await storage.toggleVisit(req.session.userId!, req.params.id);
+      if (!visit) return res.status(404).json({ message: "Visit not found" });
+      res.json(visit);
+    } catch (err: any) { console.error("PATCH /api/visits error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.delete("/api/visits/:id", requireAuth, async (req, res) => {
-    await storage.deleteVisit(req.session.userId!, req.params.id);
-    res.json({ ok: true });
+    try {
+      await storage.deleteVisit(req.session.userId!, req.params.id);
+      res.json({ ok: true });
+    } catch (err: any) { console.error("DELETE /api/visits error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.get("/api/reminders", requireAuth, async (req, res) => {
-    const data = await storage.getReminders(req.session.userId!);
-    res.json(data);
+    try {
+      const data = await storage.getReminders(req.session.userId!);
+      res.json(data);
+    } catch (err: any) { console.error("GET /api/reminders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.post("/api/reminders", requireAuth, async (req, res) => {
-    const reminder = await storage.addReminder(req.session.userId!, req.body);
-    res.json(reminder);
+    try {
+      const reminder = await storage.addReminder(req.session.userId!, req.body);
+      res.json(reminder);
+    } catch (err: any) { console.error("POST /api/reminders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.patch("/api/reminders/:id/toggle", requireAuth, async (req, res) => {
-    const reminder = await storage.toggleReminder(req.session.userId!, req.params.id);
-    if (!reminder) return res.status(404).json({ message: "Reminder not found" });
-    res.json(reminder);
+    try {
+      const reminder = await storage.toggleReminder(req.session.userId!, req.params.id);
+      if (!reminder) return res.status(404).json({ message: "Reminder not found" });
+      res.json(reminder);
+    } catch (err: any) { console.error("PATCH /api/reminders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   app.delete("/api/reminders/:id", requireAuth, async (req, res) => {
-    await storage.deleteReminder(req.session.userId!, req.params.id);
-    res.json({ ok: true });
+    try {
+      await storage.deleteReminder(req.session.userId!, req.params.id);
+      res.json({ ok: true });
+    } catch (err: any) { console.error("DELETE /api/reminders error:", err.message); res.status(500).json({ message: err.message }); }
   });
 
   return httpServer;
