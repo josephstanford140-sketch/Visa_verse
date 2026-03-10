@@ -6,7 +6,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import logoImg from '@assets/realmed_bird_logo.png';
+import logoImg from '@assets/realmed_bird_logo_white.png';
 
 const ProfilePage = () => {
   const navigate = useNavigate();

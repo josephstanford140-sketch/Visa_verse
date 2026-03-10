@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Stethoscope, Package, ShoppingCart, MapPin, Bell, BookOpen, ChevronLeft, ChevronRight, UserCircle } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
-import logoPath from '@assets/realmed_bird_logo.png';
+import logoPath from '@assets/realmed_bird_logo_white.png';
 
 const Dashboard = () => {
   const navigate = useNavigate();

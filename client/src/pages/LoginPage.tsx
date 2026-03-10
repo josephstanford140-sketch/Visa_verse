@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
-import logoImg from '@assets/realmed_bird_logo.png';
+import logoImg from '@assets/realmed_bird_logo_white.png';
 
 const RealMedLogo = () => (
   <div className="flex flex-col items-center space-y-1">
