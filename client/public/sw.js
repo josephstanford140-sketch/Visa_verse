@@ -1,4 +1,4 @@
-const CACHE_NAME = 'realmed-v1';
+const CACHE_NAME = 'realmed-v2';
 
 const PRECACHE_URLS = [
   '/',
