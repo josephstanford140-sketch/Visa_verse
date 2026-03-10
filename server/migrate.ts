@@ -11,7 +11,8 @@ export async function runMigrations() {
         "email" text NOT NULL UNIQUE,
         "phone" text DEFAULT ''
       );
-
+    `);
+    await client.query(`
       CREATE TABLE IF NOT EXISTS "doctors" (
         "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(),
         "user_id" varchar NOT NULL REFERENCES "users"("id"),
@@ -26,7 +27,8 @@ export async function runMigrations() {
         "medical_store" text DEFAULT '',
         "prescribed_products" text[] DEFAULT '{}'::text[]
       );
-
+    `);
+    await client.query(`
       CREATE TABLE IF NOT EXISTS "products" (
         "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(),
         "user_id" varchar NOT NULL REFERENCES "users"("id"),
@@ -37,7 +39,8 @@ export async function runMigrations() {
         "catalog_slide" integer DEFAULT 0,
         "is_seeded" boolean DEFAULT false
       );
-
+    `);
+    await client.query(`
       CREATE TABLE IF NOT EXISTS "orders" (
         "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(),
         "user_id" varchar NOT NULL REFERENCES "users"("id"),
@@ -45,7 +48,8 @@ export async function runMigrations() {
         "items" json DEFAULT '[]',
         "date" text DEFAULT ''
       );
-
+    `);
+    await client.query(`
       CREATE TABLE IF NOT EXISTS "visits" (
         "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(),
         "user_id" varchar NOT NULL REFERENCES "users"("id"),
@@ -53,7 +57,8 @@ export async function runMigrations() {
         "date" text DEFAULT '',
         "completed" boolean DEFAULT false
       );
-
+    `);
+    await client.query(`
       CREATE TABLE IF NOT EXISTS "reminders" (
         "id" varchar PRIMARY KEY DEFAULT gen_random_uuid(),
         "user_id" varchar NOT NULL REFERENCES "users"("id"),
@@ -64,6 +69,9 @@ export async function runMigrations() {
       );
     `);
     console.log("Database tables verified/created successfully");
+  } catch (err) {
+    console.error("Migration error:", err);
+    throw err;
   } finally {
     client.release();
   }
