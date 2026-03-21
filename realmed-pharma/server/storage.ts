@@ -1,9 +1,9 @@
 import { eq, and } from "drizzle-orm";
 import { db } from "./db";
 import {
-  users, doctors, products, orders, visits, reminders, passwordResetTokens,
+  users, doctors, products, orders, visits, reminders,
   type User, type InsertUser,
-  type Doctor, type Product, type Order, type Visit, type Reminder, type PasswordResetToken,
+  type Doctor, type Product, type Order, type Visit, type Reminder,
 } from "@shared/schema";
 
 export interface IStorage {
@@ -37,11 +37,6 @@ export interface IStorage {
   addReminder(userId: string, data: Omit<Reminder, 'id' | 'userId'>): Promise<Reminder>;
   toggleReminder(userId: string, id: string): Promise<Reminder | undefined>;
   deleteReminder(userId: string, id: string): Promise<void>;
-
-  createResetToken(userId: string, token: string, expiresAt: string): Promise<PasswordResetToken>;
-  getResetToken(token: string): Promise<PasswordResetToken | undefined>;
-  deleteResetToken(token: string): Promise<void>;
-  updateUserPassword(userId: string, hashedPassword: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -168,25 +163,6 @@ export class DatabaseStorage implements IStorage {
 
   async deleteReminder(userId: string, id: string) {
     await db.delete(reminders).where(and(eq(reminders.id, id), eq(reminders.userId, userId)));
-  }
-
-  async createResetToken(userId: string, token: string, expiresAt: string) {
-    await db.delete(passwordResetTokens).where(eq(passwordResetTokens.userId, userId));
-    const [record] = await db.insert(passwordResetTokens).values({ userId, token, expiresAt }).returning();
-    return record;
-  }
-
-  async getResetToken(token: string) {
-    const [record] = await db.select().from(passwordResetTokens).where(eq(passwordResetTokens.token, token));
-    return record;
-  }
-
-  async deleteResetToken(token: string) {
-    await db.delete(passwordResetTokens).where(eq(passwordResetTokens.token, token));
-  }
-
-  async updateUserPassword(userId: string, hashedPassword: string) {
-    await db.update(users).set({ password: hashedPassword }).where(eq(users.id, userId));
   }
 }
 

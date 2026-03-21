@@ -62,15 +62,6 @@ export const reminders = pgTable("reminders", {
   done: boolean("done").default(false),
 });
 
-export const passwordResetTokens = pgTable("password_reset_tokens", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull().references(() => users.id),
-  token: text("token").notNull().unique(),
-  expiresAt: text("expires_at").notNull(),
-});
-
-export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
-
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
