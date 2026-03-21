@@ -8,6 +8,8 @@ import { useAppStore } from "./store/useAppStore";
 import BottomNav from "./components/BottomNav";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import Dashboard from "./pages/Dashboard";
 import DoctorsPage from "./pages/DoctorsPage";
 import ProductsPage from "./pages/ProductsPage";
@@ -42,7 +44,7 @@ const AppLayout = () => {
   const { pathname } = useLocation();
   const isLoggedIn = useAppStore((s) => s.isLoggedIn);
   const checkAuth = useAppStore((s) => s.checkAuth);
-  const showNav = isLoggedIn && pathname !== '/login' && pathname !== '/signup';
+  const showNav = isLoggedIn && pathname !== '/login' && pathname !== '/signup' && pathname !== '/forgot-password' && pathname !== '/reset-password';
 
   useEffect(() => {
     checkAuth();
@@ -53,6 +55,8 @@ const AppLayout = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/doctors" element={<ProtectedRoute><DoctorsPage /></ProtectedRoute>} />
         <Route path="/doctors/:id" element={<ProtectedRoute><DoctorDetailPage /></ProtectedRoute>} />

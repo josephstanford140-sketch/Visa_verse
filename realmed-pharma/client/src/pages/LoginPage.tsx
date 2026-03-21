@@ -92,6 +92,15 @@ const LoginPage = () => {
             </div>
           </div>
           {error && <p className="text-sm text-destructive" data-testid="text-error">{error}</p>}
+          <div className="flex justify-end">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-primary hover:underline"
+              data-testid="link-forgot-password"
+            >
+              Forgot password?
+            </Link>
+          </div>
           <Button type="submit" className="w-full" disabled={loading} data-testid="button-login">
             {loading ? 'Signing in...' : 'Sign In'}
           </Button>

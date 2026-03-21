@@ -101,6 +101,51 @@ export async function registerRoutes(
     }
   });
 
+  app.post("/api/auth/forgot-password", async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) return res.status(400).json({ message: "Email is required" });
+      const user = await storage.getUserByEmail(email.trim().toLowerCase());
+      if (!user) {
+        return res.json({ message: "If that email exists, a reset link has been generated." });
+      }
+      const token = Array.from({ length: 32 }, () =>
+        Math.random().toString(36).charAt(2)
+      ).join('');
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+      await storage.createResetToken(user.id, token, expiresAt);
+      res.json({ token, message: "Reset token generated successfully." });
+    } catch (err: any) {
+      console.error("Forgot password error:", err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  app.post("/api/auth/reset-password", async (req, res) => {
+    try {
+      const { token, newPassword } = req.body;
+      if (!token || !newPassword) {
+        return res.status(400).json({ message: "Token and new password are required" });
+      }
+      if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+      }
+      const record = await storage.getResetToken(token);
+      if (!record) return res.status(400).json({ message: "Invalid or expired reset token" });
+      if (new Date(record.expiresAt) < new Date()) {
+        await storage.deleteResetToken(token);
+        return res.status(400).json({ message: "Reset token has expired. Please request a new one." });
+      }
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await storage.updateUserPassword(record.userId, hashedPassword);
+      await storage.deleteResetToken(token);
+      res.json({ message: "Password reset successfully. You can now log in." });
+    } catch (err: any) {
+      console.error("Reset password error:", err.message);
+      res.status(500).json({ message: err.message });
+    }
+  });
+
   app.post("/api/auth/logout", (req, res) => {
     req.session.destroy(() => {
       res.json({ ok: true });
