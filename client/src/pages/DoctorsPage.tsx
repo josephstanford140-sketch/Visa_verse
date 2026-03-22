@@ -17,6 +17,8 @@ const DoctorsPage = () => {
   const [editing, setEditing] = useState<Doctor | null>(null);
   const [form, setForm] = useState(emptyDoctor);
   const [search, setSearch] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const filtered = doctors.filter(
     (d) =>
@@ -24,9 +26,10 @@ const DoctorsPage = () => {
       (d.specialty || '').toLowerCase().includes(search.toLowerCase())
   );
 
-  const openNew = () => { setEditing(null); setForm(emptyDoctor); setOpen(true); };
+  const openNew = () => { setEditing(null); setForm(emptyDoctor); setError(null); setOpen(true); };
   const openEdit = (d: Doctor) => {
     setEditing(d);
+    setError(null);
     setForm({
       name: d.name,
       degree: d.degree || '',
@@ -43,11 +46,22 @@ const DoctorsPage = () => {
     setOpen(true);
   };
 
-  const save = () => {
+  const save = async () => {
     if (!form.name.trim()) return;
-    if (editing) updateDoctor({ ...form, id: editing.id, userId: editing.userId });
-    else addDoctor(form);
-    setOpen(false);
+    setSaving(true);
+    setError(null);
+    try {
+      if (editing) {
+        await updateDoctor({ ...form, id: editing.id, userId: editing.userId });
+      } else {
+        await addDoctor(form);
+      }
+      setOpen(false);
+    } catch (err: any) {
+      setError(err.message || 'Failed to save doctor. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const set = (key: string, val: string) => setForm((f) => ({ ...f, [key]: val }));
@@ -109,7 +123,8 @@ const DoctorsPage = () => {
               <Input type="date" value={form.dob} onChange={(e) => set('dob', e.target.value)} data-testid="input-dob" />
             </div>
           </div>
-          <Button onClick={save} className="w-full mt-2">{editing ? 'Update' : 'Add Doctor'}</Button>
+          {error && <p className="text-sm text-destructive mt-2">{error}</p>}
+          <Button onClick={save} className="w-full mt-2" disabled={saving}>{saving ? 'Saving...' : (editing ? 'Update' : 'Add Doctor')}</Button>
         </DialogContent>
       </Dialog>
     </div>

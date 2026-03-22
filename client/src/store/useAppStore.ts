@@ -202,16 +202,12 @@ export const useAppStore = create<AppState>()(
       },
 
       addDoctor: async (d) => {
-        try {
-          const doc = await api.post<Doctor>('/api/doctors', d);
-          set((s) => ({ doctors: [...s.doctors, doc] }));
-        } catch {}
+        const doc = await api.post<Doctor>('/api/doctors', d);
+        set((s) => ({ doctors: [...s.doctors, doc] }));
       },
       updateDoctor: async (d) => {
-        try {
-          const doc = await api.put<Doctor>(`/api/doctors/${d.id}`, d);
-          set((s) => ({ doctors: s.doctors.map((x) => x.id === d.id ? doc : x) }));
-        } catch {}
+        const doc = await api.put<Doctor>(`/api/doctors/${d.id}`, d);
+        set((s) => ({ doctors: s.doctors.map((x) => x.id === d.id ? doc : x) }));
       },
       deleteDoctor: async (id) => {
         try {
