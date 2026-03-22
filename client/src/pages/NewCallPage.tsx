@@ -41,6 +41,8 @@ const NewCallPage = () => {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>([]);
   const [search, setSearch] = useState('');
   const [showProductSelector, setShowProductSelector] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const filteredProducts = useMemo(() => {
     return products.filter(
@@ -66,17 +68,28 @@ const NewCallPage = () => {
   const startCall = async () => {
     if (!doctorId || selectedProducts.length === 0) return;
 
-    const today = new Date().toISOString().split('T')[0];
-    const call = await addCall({
-      doctorId,
-      date: today,
-      status: 'in-progress',
-      products: selectedProducts,
-      notes: '',
-    });
+    setSaving(true);
+    setError(null);
 
-    if (call) {
-      navigate(`/calls/${call.id}`, { replace: true });
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const call = await addCall({
+        doctorId,
+        date: today,
+        status: 'in-progress',
+        products: selectedProducts,
+        notes: '',
+      });
+
+      if (call) {
+        navigate(`/calls/${call.id}`, { replace: true });
+      } else {
+        setError('Failed to create call. Please try again.');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to create call. Please try again.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -199,13 +212,16 @@ const NewCallPage = () => {
 
       {/* Start Call Button */}
       <div className="fixed bottom-20 left-0 right-0 px-4 pb-4 bg-gradient-to-t from-background via-background to-transparent pt-4">
+        {error && (
+          <p className="text-sm text-destructive mb-2 text-center">{error}</p>
+        )}
         <Button
           className="w-full h-12 text-base gap-2"
           onClick={startCall}
-          disabled={selectedProducts.length === 0}
+          disabled={selectedProducts.length === 0 || saving}
         >
           <Play className="w-5 h-5" />
-          Start Call with {selectedProducts.length} Products
+          {saving ? 'Starting Call...' : `Start Call with ${selectedProducts.length} Products`}
         </Button>
       </div>
     </div>
