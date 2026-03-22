@@ -28,6 +28,14 @@ const CatalogPage = () => {
   useEffect(() => {
     const lockLandscape = async () => {
       try {
+        // Request fullscreen first (required for orientation lock on most browsers)
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        } else if ((document.documentElement as any).webkitRequestFullscreen) {
+          await (document.documentElement as any).webkitRequestFullscreen();
+        }
+        
+        // Then lock to landscape
         if (screen.orientation && (screen.orientation as any).lock) {
           await (screen.orientation as any).lock('landscape');
         }
@@ -40,6 +48,11 @@ const CatalogPage = () => {
       try {
         if (screen.orientation && screen.orientation.unlock) {
           screen.orientation.unlock();
+        }
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else if ((document as any).webkitFullscreenElement) {
+          (document as any).webkitExitFullscreen();
         }
       } catch {
         // ignore
@@ -117,7 +130,7 @@ const CatalogPage = () => {
   const translateX = -current * containerWidth + dragOffset;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black flex flex-col select-none" data-testid="catalog-fullscreen">
+    <div className="fixed inset-0 z-[100] bg-black flex flex-col select-none landscape:flex-row" data-testid="catalog-fullscreen">
       <div className="flex items-center justify-between px-3 h-14 bg-gradient-to-b from-black/90 to-black/60 backdrop-blur-sm z-10">
         <button
           onPointerDown={(e) => e.stopPropagation()}
@@ -165,7 +178,7 @@ const CatalogPage = () => {
                 <img
                   src={src}
                   alt={`Slide ${idx + 1}`}
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-full object-contain"
                   draggable={false}
                   data-testid={`catalog-slide-${idx + 1}`}
                 />
@@ -197,8 +210,8 @@ const CatalogPage = () => {
         )}
       </div>
 
-      <div className="bg-black/80 backdrop-blur-sm py-2 px-2">
-        <div className="flex gap-1 overflow-x-auto pb-1 snap-x scrollbar-hide">
+      <div className="bg-black/80 backdrop-blur-sm py-2 px-2 landscape:absolute landscape:bottom-0 landscape:left-0 landscape:right-0">
+        <div className="flex gap-1 overflow-x-auto pb-1 snap-x scrollbar-hide landscape:justify-center">
           {slides.map((src, idx) => (
             <button
               key={idx}
