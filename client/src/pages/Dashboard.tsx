@@ -16,9 +16,10 @@ const Dashboard = () => {
   const cards = [
     { label: 'Doctors', count: doctors.length, icon: Stethoscope, path: '/doctors', color: 'bg-primary' },
     { label: 'Products', count: products.length, icon: Package, path: '/products', color: 'bg-accent' },
-    { label: 'Calls', count: todayCalls.length, icon: Phone, path: '/calls', color: 'bg-info' },
-    { label: 'Visits', count: todayVisits.length, icon: MapPin, path: '/visits', color: 'bg-warning' },
+    { label: 'Orders', count: orders.length, icon: ShoppingCart, path: '/orders', color: 'bg-warning' },
+    { label: 'Visits', count: todayVisits.length, icon: MapPin, path: '/visits', color: 'bg-info' },
     { label: 'Reminders', count: activeReminders.length, icon: Bell, path: '/reminders', color: 'bg-destructive' },
+    { label: 'Calls', count: todayCalls.length, icon: Phone, path: '/calls', color: 'bg-purple-500' },
   ];
 
   return (
