@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Search, MapPin, Filter, ChevronRight, Plus, Clock, CheckCircle, X } from 'lucide-react';
+import { Phone, Search, MapPin, Filter, ChevronRight, Plus, Clock, CheckCircle, Play, Trash2 } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import { useAppStore, type Doctor, type Call } from '@/store/useAppStore';
 import { Input } from '@/components/ui/input';

@@ -7,12 +7,6 @@ import {
   X,
   Plus,
   Search,
-  ArrowLeft,
-  Play,
-  ThumbsUp,
-  ThumbsDown,
-  Minus,
-  ChevronRight,
 } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import { useAppStore, type Product } from '@/store/useAppStore';
@@ -65,7 +59,7 @@ const NewCallPage = () => {
   const isSelected = (productId: string) =>
     selectedProducts.some((p) => p.productId === productId);
 
-  const startCall = async () => {
+  const saveCall = async () => {
     if (!doctorId || selectedProducts.length === 0) return;
 
     setSaving(true);
@@ -76,18 +70,18 @@ const NewCallPage = () => {
       const call = await addCall({
         doctorId,
         date: today,
-        status: 'in-progress',
+        status: 'pending',
         products: selectedProducts,
         notes: '',
       });
 
       if (call) {
-        navigate(`/calls/${call.id}`, { replace: true });
+        navigate('/calls', { replace: true });
       } else {
-        setError('Failed to create call. Please try again.');
+        setError('Failed to save call. Please try again.');
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to create call. Please try again.');
+      setError(err.message || 'Failed to save call. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -210,18 +204,18 @@ const NewCallPage = () => {
         </div>
       </div>
 
-      {/* Start Call Button */}
+      {/* Save Call Button */}
       <div className="fixed bottom-20 left-0 right-0 px-4 pb-4 bg-gradient-to-t from-background via-background to-transparent pt-4">
         {error && (
           <p className="text-sm text-destructive mb-2 text-center">{error}</p>
         )}
         <Button
           className="w-full h-12 text-base gap-2"
-          onClick={startCall}
+          onClick={saveCall}
           disabled={selectedProducts.length === 0 || saving}
         >
-          <Play className="w-5 h-5" />
-          {saving ? 'Starting Call...' : `Start Call with ${selectedProducts.length} Products`}
+          <Plus className="w-5 h-5" />
+          {saving ? 'Saving...' : `Save Call with ${selectedProducts.length} Products`}
         </Button>
       </div>
     </div>
